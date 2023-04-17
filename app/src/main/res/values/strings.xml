@@ -1,0 +1,20 @@
+<resources>
+  <string name="app_name">DevFinder</string>
+  <string name="bar_title">devfinder</string>
+  <string name="search_placeholder">Search github username…</string>
+  <string name="light_theme">LIGHT</string>
+  <string name="dark_theme">DARK</string>
+  <string name="toggle_theme">Toggle Theme</string>
+  <string name="profile_picture">Profile Picture</string>
+  <string name="full_name">User Full Name</string>
+  <string name="user_name">Github Username</string>
+  <string name="joined_date">Joined %1$s</string>
+  <string name="repos">Repos</string>
+  <string name="followers">Followers</string>
+  <string name="following">Following</string>
+  <string name="location">Location</string>
+  <string name="website">Website</string>
+  <string name="twitter">Twitter</string>
+  <string name="company">Company</string>
+  <string name="not_available">Not Available</string>
+</resources>
