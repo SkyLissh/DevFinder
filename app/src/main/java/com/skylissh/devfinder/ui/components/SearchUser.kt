@@ -1,7 +1,6 @@
 package com.skylissh.devfinder.ui.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -34,8 +33,8 @@ import compose.icons.feathericons.Search
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchUser(modifier: Modifier = Modifier) {
-  var text by remember { mutableStateOf(TextFieldValue("")) }
+fun SearchUser(modifier: Modifier = Modifier, onSearch: (String) -> Unit) {
+  var field by remember { mutableStateOf(TextFieldValue("")) }
 
   OutlinedTextField(
     modifier = modifier
@@ -45,11 +44,12 @@ fun SearchUser(modifier: Modifier = Modifier) {
         shape = shapes.medium,
         ambientColor = BlueGrey80,
       ),
-    value = text,
+    value = field,
     placeholder = { Text(stringResource(R.string.search_placeholder)) },
-    onValueChange = { text = it },
+    onValueChange = { field = it },
+    singleLine = true,
     trailingIcon = {
-       IconButton(onClick = { /*TODO*/ }) {
+      IconButton(onClick = { onSearch(field.text) }) {
         Icon(
           FeatherIcons.Search,
           contentDescription = null,
@@ -71,7 +71,10 @@ fun SearchUser(modifier: Modifier = Modifier) {
 private fun SearchUserPreview() {
   DevFinderTheme {
     Surface(color = MaterialTheme.colorScheme.background) {
-      SearchUser(modifier = Modifier.padding(DevFinderPadding.Medium))
+      SearchUser(
+        modifier = Modifier.padding(DevFinderPadding.Medium),
+        onSearch = {  },
+      )
     }
   }
 }

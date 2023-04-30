@@ -1,6 +1,7 @@
 package com.skylissh.devfinder.ui.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,10 +25,15 @@ import com.skylissh.devfinder.R
 import com.skylissh.devfinder.ui.theme.DevFinderPadding
 import com.skylissh.devfinder.ui.theme.DevFinderTheme
 import compose.icons.FeatherIcons
+import compose.icons.feathericons.Moon
 import compose.icons.feathericons.Sun
 
 @Composable
-fun TopBar(modifier: Modifier = Modifier) {
+fun TopBar(
+  modifier: Modifier = Modifier,
+  isDarkMode: Boolean,
+  onToggle: (Boolean) -> Unit,
+) {
   Row(
     modifier = modifier.fillMaxWidth(),
     horizontalArrangement = Arrangement.SpaceBetween,
@@ -37,29 +43,36 @@ fun TopBar(modifier: Modifier = Modifier) {
       stringResource(R.string.bar_title),
       style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
     )
-    ToggleThemeButton()
+    ToggleThemeButton(isDarkMode, onToggle)
   }
 }
 
 @Composable
-private fun ToggleThemeButton() {
+private fun ToggleThemeButton(isDarkMode: Boolean, onToggle: (Boolean) -> Unit) {
   val toggleThemeLabel = stringResource(R.string.toggle_theme)
+  val text = if (isDarkMode) {
+    stringResource(R.string.dark_theme)
+  } else {
+    stringResource(R.string.light_theme)
+  }
+
+  val icon = if (isDarkMode) FeatherIcons.Moon else FeatherIcons.Sun
 
   TextButton(
     modifier = Modifier.semantics(mergeDescendants = true) {
       onClick(label = toggleThemeLabel, action = null)
     },
-    onClick = { /*TODO*/ }
+    onClick = { onToggle(!isDarkMode) }
   ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
       Text(
-        stringResource(R.string.light_theme),
+        text,
         style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
         color = MaterialTheme.colorScheme.onBackground,
       )
       Spacer(modifier = Modifier.width(DevFinderPadding.Medium))
       Icon(
-        FeatherIcons.Sun,
+        icon,
         contentDescription = null,
         tint = MaterialTheme.colorScheme.onBackground,
       )
@@ -73,7 +86,11 @@ private fun ToggleThemeButton() {
 private fun TopBarPreview() {
   DevFinderTheme {
     Surface(color = MaterialTheme.colorScheme.background) {
-      TopBar(modifier = Modifier.padding(DevFinderPadding.Medium))
+      TopBar(
+        modifier = Modifier.padding(DevFinderPadding.Medium),
+        isDarkMode = isSystemInDarkTheme(),
+        onToggle = {},
+      )
     }
   }
 }

@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import com.skylissh.devfinder.models.GithubUser
 import com.skylissh.devfinder.ui.theme.DevFinderPadding
 import com.skylissh.devfinder.ui.theme.DevFinderTheme
 import kotlinx.datetime.Instant
@@ -21,29 +22,36 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
 @Composable
-fun GithubCard(modifier: Modifier = Modifier) {
+fun GithubCard(modifier: Modifier = Modifier, user: GithubUser) {
   Card(modifier = modifier.fillMaxWidth()) {
     Column(modifier = Modifier.padding(DevFinderPadding.Medium)) {
       GithubCardHeader(
-        imageUrl = "https://picsum.photos/300/300",
-        name = "Octocat",
-        username = "@octocat",
-        joinDate = Instant.parse("2023-04-15T22:14:04Z").toLocalDateTime(TimeZone.UTC)
+        imageUrl = user.avatar,
+        name = user.name,
+        username = "@${user.username}",
+        joinDate = Instant
+          .parse("2023-04-15T22:14:04Z")
+          .toLocalDateTime(TimeZone.UTC)
       )
       Spacer(modifier = Modifier.height(DevFinderPadding.ExtraLarge))
-      Text(
-        "Legimus facilisi dictumst wisi tortor non eruditi. Placerat laoreet ius pertinacia tempor luctus novum appareat te. Ullamcorper sollicitudin quaestio habitant ullamcorper dicunt evertitur. Dictas tale quaerendum ut persequeris finibus definiebas comprehensam molestie. Ultricies novum has pertinacia aliquip semper mel eam tincidunt ceteros.",
-        maxLines = 5,
-        overflow = TextOverflow.Ellipsis,
+
+      Text(user.bio, maxLines = 5, overflow = TextOverflow.Ellipsis)
+
+      Spacer(modifier = Modifier.height(DevFinderPadding.Large))
+
+      GithubCardSocialInfo(
+        repos = user.repos,
+        followers = user.followers,
+        following = user.following,
       )
+
       Spacer(modifier = Modifier.height(DevFinderPadding.Large))
-      GithubCardSocialInfo(repos = 8, followers = 3938, following = 9)
-      Spacer(modifier = Modifier.height(DevFinderPadding.Large))
+
       GithubCardPersonalInfo(
-        location = "San Francisco",
-        website = "https://github.blog",
-        twitter = null,
-        company = "@github",
+        location = user.location,
+        website = user.website,
+        twitter = user.twitter,
+        company = user.company,
       )
     }
   }
@@ -53,9 +61,26 @@ fun GithubCard(modifier: Modifier = Modifier) {
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
 private fun GithubCardPreview() {
+  val date = Instant.parse("2023-04-15T22:04:12Z")
+
+  val user = GithubUser(
+    name = "Octocat",
+    username = "octocat",
+    createdAt = date,
+    avatar = "https://picsum.photos/300/300",
+    bio = "hello, my name is Octocat",
+    repos = 8,
+    followers = 3938,
+    following = 9,
+    company = "GitHub",
+    location = "San Francisco",
+    twitter = null,
+    website = "https://github.blog"
+  )
+
   DevFinderTheme {
     Surface(color = MaterialTheme.colorScheme.background) {
-      GithubCard(Modifier.padding(DevFinderPadding.Medium))
+      GithubCard(modifier = Modifier.padding(DevFinderPadding.Medium), user = user)
     }
   }
 }
